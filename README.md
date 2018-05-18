@@ -1,6 +1,6 @@
 # tomcat8-ubuntu
 
-Vanilla Tomcat 8.05.31 built from ubuntu:latest
+Vanilla Tomcat 8.5.31 built from ubuntu:latest
 
 # Docker Run
 
