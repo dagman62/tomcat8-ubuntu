@@ -1,9 +1,29 @@
 FROM ubuntu:latest
-RUN apt-get -y update && apt-get -y upgrade
-RUN apt-get -y install openjdk-8-jdk wget vim
-RUN mkdir /usr/local/tomcat
-RUN wget http://www-us.apache.org/dist/tomcat/tomcat-8/v8.5.30/bin/apache-tomcat-8.5.30.tar.gz -O /tmp/tomcat.tar.gz
-RUN cd /tmp && tar xvfz tomcat.tar.gz
-RUN cp -Rv /tmp/apache-tomcat-8.5.30/* /usr/local/tomcat/
+
+ENV TC_VER 8.5.31
+ENV TC_PREFIX /usr/local/tomcat
+
+RUN apt-get -y update \
+  && apt-get -y upgrade \
+  && apt-get -y install \
+  openjdk-8-jdk \
+  wget \
+  less \
+  && wget http://www-us.apache.org/dist/tomcat/tomcat-8/v${TC_VER}/bin/apache-tomcat-${TC_VER}.tar.gz \
+  -O /tmp/tomcat.tar.gz \
+  && mkdir ${TC_PREFIX} \ 
+  && tar -zxvf /tmp/tomcat.tar.gz -C /tmp \
+  && cp -Rv /tmp/apache-tomcat-${TC_VER}/* ${TC_PREFIX}/ \
+  && rm -f /tmp/tomcat.tar.gz \
+  && useradd -d /usr/local/tomcat -c Tomcat8 -s /bin/bash -M tomcat8
+
+RUN chown -R tomcat8:tomcat8 ${TC_PREFIX} \ 
+  && rm -rf /var/lib/apt/lists/* \
+  && rm -rf /tmp/*
+
 EXPOSE 8080
-CMD /usr/local/tomcat/bin/catalina.sh run
+
+USER tomcat8
+
+CMD /usr/local/tomcat/bin/catalina.sh run 
+

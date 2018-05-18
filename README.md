@@ -1,2 +1,9 @@
 # tomcat8-ubuntu
-Dockerfile build using ubuntu: latest and tomcat 8.5.30 tarball
+
+Vanilla Tomcat 8.05.31 built from ubuntu:latest
+
+# Docker Run
+
+```
+docker run -p 8080:8080 --name tomcat dagman62/tomcat8
+```
